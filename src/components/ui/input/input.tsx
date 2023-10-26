@@ -1,11 +1,17 @@
 import styles from './input.module.css';
-import { InputHTMLAttributes } from "react";
+import { Dispatch, InputHTMLAttributes, SetStateAction } from "react";
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> { }
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+  setValue: Dispatch<SetStateAction<string>>
+}
 
-export function Input({ ...rest }: InputProps) {
+export function Input({ setValue, ...rest }: InputProps) {
 
   return (
-    <input {...rest} className={styles.input} />
+    <input
+      className={styles.input}
+      onChange={(e) => setValue(e.target.value)}
+      {...rest}
+    />
   )
 }
