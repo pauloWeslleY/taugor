@@ -7,10 +7,13 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
-    <AuthProvider>
+    <>
       <BrowserRouter>
-        <RoutesApp />
+        <AuthProvider>
+          <RoutesApp />
+        </AuthProvider>
       </BrowserRouter>
+      {/* toastfy */}
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -23,7 +26,7 @@ function App() {
         pauseOnHover
         theme="light"
       />
-    </AuthProvider>
+    </>
   )
 }
 
