@@ -6,10 +6,13 @@
   --dark-500: #3f3f3f;
   --gray-100: #eff4ff;
   --blue-700: #4576df;
+  --blue-900: #253f77;
 
-  --borde-radius: 8px;
+  --border-radius: 4px;
+  --box-shadow: 2px 2px 8px #0000002f;
 
   --font-padrao: "Roboto", sans-serif;
+  --font-size-icons: 22px;
 }
 
 * {
@@ -20,6 +23,7 @@
   text-decoration: none;
   font-family: sans-serif;
   font-family: var(--font-padrao);
+  border: none;
 }
 
 body,
