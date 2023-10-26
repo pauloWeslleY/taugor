@@ -1,0 +1,13 @@
+.input {
+  height: 40px;
+  width: 100%;
+  font-size: 1rem;
+  background-color: var(--gray-100);
+  padding: 0 0.5rem;
+
+  border-radius: var(--border-radius);
+  box-shadow: inset 0 0 8px #0000001e;
+}
+.input:focus {
+  box-shadow: inset 0 0 8px var(--blue-700);
+}
