@@ -1,4 +1,4 @@
-import { FaEdit, FaHome, FaInfoCircle, FaLightbulb, FaPlus } from 'react-icons/fa';
+import { FaEdit, FaHome, FaInfoCircle, FaLightbulb, FaPlus, FaArrowUp } from 'react-icons/fa';
 import { FaXmark } from 'react-icons/fa6';
 import { BiLoaderCircle } from 'react-icons/bi';
 
@@ -9,5 +9,6 @@ export const icons = {
   lightBulb: <FaLightbulb />,
   loading: <BiLoaderCircle />,
   close: <FaXmark />,
-  plus: <FaPlus />
+  plus: <FaPlus />,
+  arrowUp: <FaArrowUp />
 }
