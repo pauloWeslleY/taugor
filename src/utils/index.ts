@@ -1,0 +1,1 @@
+export { handleRegisterRoleOrSector } from "./handleRegisterRoleOrSector";

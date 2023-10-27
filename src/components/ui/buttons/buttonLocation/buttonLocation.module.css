@@ -7,7 +7,7 @@
   font-weight: 500;
   font-size: 0.9rem;
   padding: 0 1rem;
-  border-radius: var(--border-radius);
+  border-radius: 4px 4px 0 0;
 }
 .buttonLocationActive,
 .buttonLocation:hover {
