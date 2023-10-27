@@ -1,16 +1,21 @@
-import { BrowserRouter } from 'react-router-dom'
-import './App.css'
-import RoutesApp from './routes/router'
-import AuthProvider from './contexts/authContext'
-import { ToastContainer } from 'react-toastify'
+import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
+import RoutesApp from './routes/router';
+import AuthProvider from './contexts/authContext';
+import EmployerProvider from './contexts/employerContext';
+import { BrowserRouter } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
     <>
       <BrowserRouter>
+        {/* contexto do usuário logado */}
         <AuthProvider>
-          <RoutesApp />
+          {/* contexto de dados dos funcionários */}
+          <EmployerProvider>
+            <RoutesApp />
+          </EmployerProvider>
         </AuthProvider>
       </BrowserRouter>
       {/* toastfy */}
@@ -30,4 +35,5 @@ function App() {
   )
 }
 
-export default App
+export default App;
+

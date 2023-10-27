@@ -1,5 +1,5 @@
 import styles from './roles.module.css';
-import { FormEvent, useState } from "react";
+import { FormEvent, useContext, useState } from "react";
 import { collection, } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 
@@ -12,6 +12,7 @@ import { FormCenter } from '../../../../components/ui/formCenter';
 import { Modal } from '../../../../components/interface/modal';
 import { Cards } from '../../../../components/interface/cards';
 import { Card } from '../../../../components/types/RolesOrSector';
+import { EmployerContext } from '../../../../contexts/employerContext';
 
 type Roles = Card[]
 
@@ -20,8 +21,8 @@ export function Roles() {
   const [role, setRole] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [modalNewRoleVisible, setModalNewRoleVisible] = useState<boolean>(false);
-  const [listRoles, setListRoles] = useState<Roles>([]);
 
+  const { listRoles, setListRoles } = useContext(EmployerContext)
 
   async function handleRegister(e: FormEvent) {
     setLoading(true);
@@ -46,7 +47,7 @@ export function Roles() {
     if (response) {
       setListRoles([...listRoles, response]);
     }
-    setRole("")
+    setRole("");
     setLoading(false);
   };
 
