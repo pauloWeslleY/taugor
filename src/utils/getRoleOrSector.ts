@@ -1,16 +1,14 @@
 import { CollectionReference, DocumentData, getDocs } from "firebase/firestore";
 import { toast } from "react-toastify";
-import { Card } from "../components/types/RolesOrSector";
+import { ListRolesOrSectors } from "../contexts/employerContext";
 
-type ListDoc = Card[];
-
-export async function GetRoleOrSector(
+export async function getRoleOrSector(
   docRef: CollectionReference<DocumentData>
 ) {
   try {
     const response = await getDocs(docRef);
 
-    let list: ListDoc = [];
+    let list: ListRolesOrSectors = [];
 
     response.forEach((item) => {
       list.push({

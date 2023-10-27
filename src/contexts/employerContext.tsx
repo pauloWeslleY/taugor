@@ -1,9 +1,7 @@
 import { Dispatch, ReactNode, SetStateAction, createContext, useEffect, useState } from "react";
-import { GetRoleOrSector } from "../utils/getRoleOrSector";
 import { collection } from "firebase/firestore";
 import { db } from "../services/firebaseConnection";
-
-
+import { getRoleOrSector } from "../utils";
 
 interface EmployerContextProps {
   listRoles: RolesOrSectors[]
@@ -28,7 +26,7 @@ export default function EmployerProvider({ children }: { children: ReactNode }) 
   useEffect(() => {
     async function loadingRoles() {
       const docRef = collection(db, "roles");
-      const response = await GetRoleOrSector(docRef);
+      const response = await getRoleOrSector(docRef);
 
       if (response) {
         setListRoles(response)
@@ -40,7 +38,7 @@ export default function EmployerProvider({ children }: { children: ReactNode }) 
   useEffect(() => {
     async function loadingSectors() {
       const docRef = collection(db, "sectors");
-      const response = await GetRoleOrSector(docRef);
+      const response = await getRoleOrSector(docRef);
 
       if (response) {
         setListSectors(response)
