@@ -2,7 +2,7 @@ import styles from './login.module.css';
 import { FormEvent, useContext, useState } from 'react';
 
 import Logo from '../../assets/logo-taugor.png';
-import { Button } from '../../components/ui/button/button';
+import { Button } from '../../components/ui/buttons/button/button';
 import { Input } from '../../components/ui/input/input';
 import { AuthContext } from '../../contexts/authContext';
 import { toast } from 'react-toastify';

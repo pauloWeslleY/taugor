@@ -1,0 +1,30 @@
+.buttonLocation {
+  background-color: var(--gray-100);
+}
+.buttonLocationActive,
+.buttonLocation {
+  height: 40px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  padding: 0 1rem;
+  border-radius: var(--border-radius);
+}
+.buttonLocationActive,
+.buttonLocation:hover {
+  background-color: var(--blue-700);
+  color: var(--white);
+}
+
+.spiner svg {
+  font-size: var(--font-size-icons);
+  animation: spiner 3s linear infinite;
+}
+
+@keyframes spiner {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

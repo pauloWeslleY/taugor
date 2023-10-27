@@ -1,6 +1,6 @@
 import styles from './button.module.css';
 import { ButtonHTMLAttributes, ReactNode } from "react";
-import { icons } from "../../../config/icons";
+import { icons } from "../../../../config/icons";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   loading: boolean

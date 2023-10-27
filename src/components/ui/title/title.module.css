@@ -1,0 +1,7 @@
+.areaTitle {
+  width: 100%;
+  background-color: var(--blue-700);
+  padding: 1rem;
+  color: var(--white);
+  text-align: center;
+}
