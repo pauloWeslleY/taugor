@@ -1,28 +1,28 @@
 import styles from './roles.module.css';
 import { FormEvent, useContext, useState } from "react";
-import { collection, } from 'firebase/firestore';
+import { collection, doc, } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 
 import { db } from "../../../../services/firebaseConnection";
 import { icons } from '../../../../config/icons';
-import { handleRegisterRoleOrSector } from '../../../../utils';
+import { handleRegisterRoleOrSector, editRoleOrSector } from '../../../../utils';
 import { Input } from "../../../../components/ui/input/input";
 import { Button } from "../../../../components/ui/buttons/button/button";
 import { FormCenter } from '../../../../components/ui/formCenter';
 import { Modal } from '../../../../components/interface/modal';
 import { Cards } from '../../../../components/interface/cards';
-import { Card } from '../../../../components/types/RolesOrSector';
 import { EmployerContext } from '../../../../contexts/employerContext';
-
-type Roles = Card[]
 
 export function Roles() {
 
   const [role, setRole] = useState<string>("");
+  const [newRole, setNewRole] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [modalNewRoleVisible, setModalNewRoleVisible] = useState<boolean>(false);
+  const [modalEditRoleVisible, setModalEditRoleVisible] = useState<boolean>(false);
+  const [currentIdEdit, setCurrentIdEdit] = useState<string>("");
 
-  const { listRoles, setListRoles } = useContext(EmployerContext)
+  const { listRoles, setListRoles } = useContext(EmployerContext);
 
   async function handleRegister(e: FormEvent) {
     setLoading(true);
@@ -51,10 +51,58 @@ export function Roles() {
     setLoading(false);
   };
 
+  async function handleModalEdit(item: { id: string, name: string }) {
+    setModalEditRoleVisible(true);
+    setCurrentIdEdit(item.id);
+    // setando os 2 valores para validar se o usuário fez alguma alteração
+    setRole(item.name);
+    setNewRole(item.name);
+  }
+
+  //  Editando cargo 
+  async function handleEdit() {
+    setLoading(true);
+
+    // função retorna boolean para alteração de state local
+    const docRef = doc(db, "roles", currentIdEdit);
+
+    const newRoleUpper = newRole.toLocaleUpperCase();
+    const response = await editRoleOrSector({ docRef, name: newRoleUpper });
+
+    if (response) {
+      toast.success("Sucesso ao atualizar cargo");
+
+      //atualizando o state local com o novo nome
+      const newListRoles = listRoles;
+      //identificando o index do item atualizado
+      const indexRoleUpdate = newListRoles.findIndex((item) => item.id === currentIdEdit);
+
+      newListRoles[indexRoleUpdate].name = newRoleUpper;
+
+      setListRoles(newListRoles);
+
+      setLoading(false);
+      handleCloseEdit();
+      return
+    } else {
+      toast.error("Erro ao atualizar cargo!");
+    }
+
+    setLoading(false);
+    handleCloseEdit();
+  }
+  //fechar modais
   function handleClose() {
     setRole("");
     setModalNewRoleVisible(false);
   };
+
+  function handleCloseEdit() {
+    setModalEditRoleVisible(false);
+    setCurrentIdEdit('')
+    setRole("");
+    setNewRole('');
+  }
 
   return (
     <section className={styles.container}>
@@ -66,7 +114,7 @@ export function Roles() {
           <span>{icons.plus}</span>Novo Cargo
         </button>
       </section>
-      <Cards edit={() => { }} list={listRoles} />
+      <Cards edit={handleModalEdit} list={listRoles} />
 
       {modalNewRoleVisible && (
         <Modal handleClose={handleClose} title={"Cadastre um Cargo"}>
@@ -86,6 +134,29 @@ export function Roles() {
               onClick={(e) => handleRegister(e)}
             >
               Cadastrar
+            </Button>
+          </FormCenter>
+        </Modal>
+      )}
+
+      {modalEditRoleVisible && currentIdEdit !== "" && (
+        <Modal handleClose={handleCloseEdit} title={"Atualizando Cargo"}>
+          <FormCenter >
+            <label>
+              Setor:
+              <Input
+                setValue={setNewRole}
+                value={newRole}
+                placeholder="Atualize o cargo"
+              />
+            </label>
+
+            <Button
+              disabled={newRole === "" || newRole === role}
+              loading={loading}
+              onClick={handleEdit}
+            >
+              Editar
             </Button>
           </FormCenter>
         </Modal>
