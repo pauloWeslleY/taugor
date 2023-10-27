@@ -47,6 +47,9 @@ export default function EmployerProvider({ children }: { children: ReactNode }) 
     loadingSectors();
   }, [])
 
+
+
+
   return (
     <EmployerContext.Provider
       value={{
