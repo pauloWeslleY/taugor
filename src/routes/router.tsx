@@ -4,6 +4,7 @@ import Login from '../pages/login';
 import NotFound from '../pages/notFound';
 import Home from '../pages/home';
 import PrivateRoutes from './private';
+import Register from '../pages/register';
 
 export default function RoutesApp() {
 
@@ -15,6 +16,13 @@ export default function RoutesApp() {
         element={
           <PrivateRoutes>
             <Home />
+          </PrivateRoutes>}
+      />
+      <Route
+        path='/register'
+        element={
+          <PrivateRoutes>
+            <Register />
           </PrivateRoutes>}
       />
 
