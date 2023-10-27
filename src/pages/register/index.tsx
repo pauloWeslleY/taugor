@@ -16,7 +16,7 @@ export default function Register() {
     <>
       <Header />
       <main>
-        <Title title="Cadastro de Funcionários" />
+        <Title title="Cadastrar" />
         <section className={styles.areaButtonLocalization}>
           <ButtonLocation
             active={localization === "employe"}
@@ -30,14 +30,14 @@ export default function Register() {
             loading={false}
             onClick={() => setLocalization("role")}
           >
-            Cargo
+            Cargos
           </ButtonLocation>
           <ButtonLocation
             active={localization === "sector"}
             loading={false}
             onClick={() => setLocalization("sector")}
           >
-            Setor
+            Setores
           </ButtonLocation>
         </section>
 

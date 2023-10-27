@@ -1,9 +1,9 @@
 import styles from './cards.module.css';
 import { icons } from "../../../config/icons";
-import { CardList } from "../../types/RolesOrSector";
+import { ListRolesOrSectors } from '../../../contexts/employerContext';
 
 interface CardsProps {
-  list: CardList,
+  list: ListRolesOrSectors,
   edit: any
 }
 
@@ -15,7 +15,7 @@ export function Cards({ list, edit }: CardsProps) {
         <section key={item.id} className={styles.card}>
           <p>{item.name}</p>
           <button
-            onClick={() => edit(item.id)}
+            onClick={() => edit(item)}
           >
             {icons.edit}
           </button>
