@@ -1,0 +1,76 @@
+.cardEmploye {
+  background-color: var(--gray-100);
+  width: fit-content;
+  min-width: 440px;
+  display: flex;
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+.cardEmploye img {
+  width: 140px;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+}
+.infoCardEmploye {
+  padding-left: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.areaHeaderCardEmployeActive {
+  background-color: green;
+}
+.areaHeaderCardEmployeInactive {
+  background-color: red;
+}
+.areaHeaderCardEmployeActive,
+.areaHeaderCardEmployeInactive {
+  color: var(--white);
+  width: fit-content;
+
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--border-radius);
+  margin-bottom: 0.5rem;
+  align-self: flex-end;
+}
+.areaHeaderCardEmployeActive span,
+.areaHeaderCardEmployeInactive span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}
+.cardInfoGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+.cardInfoGrid p {
+  display: flex;
+  flex-direction: column;
+}
+.detailLink {
+  height: 30px;
+  background-color: var(--blue-700);
+  color: var(--white);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  padding: 0 1rem;
+  border-radius: var(--border-radius);
+  margin-top: 0.5rem;
+}
+.detailLink:hover {
+  background-color: var(--blue-900);
+}
+.detailLink span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

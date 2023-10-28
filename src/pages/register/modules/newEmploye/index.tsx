@@ -1,32 +1,32 @@
-import styles from './newEmploye.module.css';
+import styles from "./newEmploye.module.css";
 import { FormEvent, useContext, useState } from "react";
 
 import { Input } from "../../../../components/ui/input/input";
-import AvatarGirl from '../../../../assets/avatar-feminino.png';
-import AvatarBoy from '../../../../assets/avatar-masculino.png';
+import AvatarGirl from "../../../../assets/avatar-feminino.png";
+import AvatarBoy from "../../../../assets/avatar-masculino.png";
 import { icons } from "../../../../config/icons";
-import { EmployerContext } from '../../../../contexts/employerContext';
-import { Button } from '../../../../components/ui/buttons/button/button';
-import { addDoc, collection } from 'firebase/firestore';
-import { db } from '../../../../services/firebaseConnection';
-import { toast } from 'react-toastify';
+import { EmployerContext } from "../../../../contexts/employerContext";
+import { Button } from "../../../../components/ui/buttons/button/button";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../../../../services/firebaseConnection";
+import { toast } from "react-toastify";
 
-type Status = "active" | "fired" | "end_of_contract"
+type Status = "active" | "fired" | "end_of_contract";
 
 interface dataEmployeProps {
-  name: string,
-  sex: string,
-  cpf: string,
-  birth: string,
-  profileUrl: string | null,
-  email: string,
-  address: string,
-  tel: string,
-  role: string,
-  sector: string,
-  wage: number,
-  dateAdmission: string,
-  status: Status,
+  name: string;
+  sex: string;
+  cpf: string;
+  birth: string;
+  profileUrl: string | null;
+  email: string;
+  address: string;
+  tel: string;
+  role: string;
+  sector: string;
+  wage: number;
+  dateAdmission: string;
+  status: Status;
 }
 
 export function NewEmployer() {
@@ -44,14 +44,13 @@ export function NewEmployer() {
     status: "active",
     tel: "",
     wage: 0.0,
-    birth: ""
-  })
+    birth: "",
+  });
 
   const { listRoles, listSectors } = useContext(EmployerContext);
 
-  function handleChange({ prop, value }: { prop: string, value: string }) {
-
-    setDataEmploye({ ...dataEmploye, [prop]: value })
+  function handleChange({ prop, value }: { prop: string; value: string }) {
+    setDataEmploye({ ...dataEmploye, [prop]: value });
   }
 
   async function handleAddNewEmploye(e: FormEvent) {
@@ -71,16 +70,14 @@ export function NewEmployer() {
       status,
       tel,
       wage,
-      birth
+      birth,
     } = dataEmploye;
 
     //validar se o cpf já está cadastrado
 
     //objeto a ser reutilizado caso o cadastro dê certo
 
-
     try {
-
       const dataNewEmploye = {
         name,
         sex,
@@ -94,38 +91,36 @@ export function NewEmployer() {
         status,
         tel,
         wage,
-        birth
-      }
+        birth,
+      };
 
       const docRef = collection(db, "employes");
       const response = await addDoc(docRef, dataNewEmploye);
 
-      console.log(response)
+      console.log(response);
 
       toast.success("Funcionário cadastrado com sucesso!");
-
     } catch (error) {
-
       toast.error("Erro ao cadastrar Funcionário!");
     } finally {
       setLoading(false);
     }
   }
 
-  function handleActiveButton() {
-
-  }
+  // function handleActiveButton() {}
 
   return (
     <section className={styles.container}>
-      <form onSubmit={(e) => handleAddNewEmploye(e)} >
+      <form onSubmit={(e) => handleAddNewEmploye(e)}>
         {/* Inicio do header do formulário */}
         <section className={styles.headerForm}>
           <section className={styles.areaName}>
             <label>
               Nome:
               <Input
-                setValue={(e) => handleChange({ prop: "name", value: e as string })}
+                setValue={(e) =>
+                  handleChange({ prop: "name", value: e as string })
+                }
                 value={dataEmploye.name}
                 placeholder="Digite seu nome!"
               />
@@ -137,7 +132,9 @@ export function NewEmployer() {
                   type="radio"
                   name="sex"
                   value={dataEmploye.sex}
-                  onChange={() => handleChange({ prop: "sex", value: "masculine" })}
+                  onChange={() =>
+                    handleChange({ prop: "sex", value: "masculine" })
+                  }
                   checked={dataEmploye.sex === "masculine"}
                 />
                 Masculino
@@ -147,7 +144,9 @@ export function NewEmployer() {
                   type="radio"
                   name="sex"
                   value={dataEmploye.sex}
-                  onChange={() => handleChange({ prop: "sex", value: "feminine" })}
+                  onChange={() =>
+                    handleChange({ prop: "sex", value: "feminine" })
+                  }
                   checked={dataEmploye.sex === "feminine"}
                 />
                 Feminino
@@ -161,13 +160,13 @@ export function NewEmployer() {
               <img src={AvatarGirl} alt="Avatar" />
             )}
             <section className={styles.infoImg}>
-              <strong>Foto de Perfil <span>{icons.lightBulb}</span></strong>
+              <strong>
+                Foto de Perfil <span>{icons.lightBulb}</span>
+              </strong>
               <label className={styles.inputFile}>
                 Adicionar Foto
-                <span>
-                  {icons.arrowUp}
-                </span>
-                <input type='file' />
+                <span>{icons.arrowUp}</span>
+                <input type="file" />
               </label>
             </section>
           </section>
@@ -176,51 +175,63 @@ export function NewEmployer() {
         <label>
           Endereço:
           <Input
-            setValue={(e) => handleChange({ prop: "address", value: e as string })}
+            setValue={(e) =>
+              handleChange({ prop: "address", value: e as string })
+            }
             value={dataEmploye.address}
-            placeholder='Digite um endereço'
+            placeholder="Digite um endereço"
           />
         </label>
         <section className={styles.formGrid}>
           <label>
             Telefone:
             <Input
-              setValue={(e) => handleChange({ prop: "tel", value: e as string })}
+              setValue={(e) =>
+                handleChange({ prop: "tel", value: e as string })
+              }
               value={dataEmploye.tel}
-              placeholder='(xx) xxxxx-xxxx'
+              placeholder="(xx) xxxxx-xxxx"
             />
           </label>
           <label>
             Email:
             <Input
-              setValue={(e) => handleChange({ prop: "email", value: e as string })}
+              setValue={(e) =>
+                handleChange({ prop: "email", value: e as string })
+              }
               value={dataEmploye.email}
-              placeholder='exemplo@gmail.com'
+              placeholder="exemplo@gmail.com"
             />
           </label>
           <label>
             CPF:
             <Input
-              setValue={(e) => handleChange({ prop: "cpf", value: e as string })}
+              setValue={(e) =>
+                handleChange({ prop: "cpf", value: e as string })
+              }
               value={dataEmploye.cpf}
-              placeholder='Digite um CPF'
+              placeholder="Digite um CPF"
             />
           </label>
           <section className={styles.areaDate}>
             <label>
               Data de Nascimento:
               <Input
-                setValue={(e) => handleChange({ prop: "birth", value: e as string })}
-                type='date'
+                setValue={(e) =>
+                  handleChange({ prop: "birth", value: e as string })
+                }
+                type="date"
                 value={dataEmploye.birth}
               />
             </label>
             <label>
               Data de Admissão
               <Input
-                setValue={(e) => handleChange({ prop: "birth", value: e as string })}
-                type='date'
-                value={dataEmploye.birth}
+                setValue={(e) =>
+                  handleChange({ prop: "dateAdmission", value: e as string })
+                }
+                type="date"
+                value={dataEmploye.dateAdmission}
               />
             </label>
           </section>
@@ -250,21 +261,19 @@ export function NewEmployer() {
             <label className={styles.wage}>
               Salário:
               <Input
-                setValue={(e) => handleChange({ prop: "birth", value: e as string })}
-                value={dataEmploye.birth}
-                placeholder='R$: 00,00'
+                setValue={(e) =>
+                  handleChange({ prop: "wage", value: e as string })
+                }
+                value={dataEmploye.wage}
+                placeholder="R$: 00,00"
               />
             </label>
-            <Button
-              disabled={false}
-              loading={loading}
-              type='submit'
-            >
+            <Button disabled={false} loading={loading} type="submit">
               Cadastrar
             </Button>
           </section>
         </section>
       </form>
     </section>
-  )
+  );
 }

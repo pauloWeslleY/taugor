@@ -5,3 +5,10 @@
   justify-content: center;
   gap: 1rem;
 }
+.containerCardEmploye {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(430px, 1fr));
+  gap: 1rem;
+  justify-items: center;
+  padding: 0 1rem;
+}
