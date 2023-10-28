@@ -52,7 +52,12 @@ export default function Home() {
     loadEmployes();
   }, []);
 
-  console.log(listEmployes);
+  const listEmployeInactive = listEmployes.filter(
+    (employe: any) => employe?.status !== "active"
+  );
+  const listEmployeActive = listEmployes.filter(
+    (employe: any) => employe?.status === "active"
+  );
 
   return (
     <>
@@ -77,7 +82,14 @@ export default function Home() {
         </section>
         {localization === "active" && (
           <section className={styles.containerCardEmploye}>
-            {listEmployes.map((employe: any) => (
+            {listEmployeActive.map((employe: any) => (
+              <CardEmploye employe={employe} />
+            ))}
+          </section>
+        )}
+        {localization === "disabled" && (
+          <section className={styles.containerCardEmploye}>
+            {listEmployeInactive.map((employe: any) => (
               <CardEmploye employe={employe} />
             ))}
           </section>
