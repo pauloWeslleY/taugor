@@ -1,32 +1,42 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route } from "react-router-dom";
 
-import Login from '../pages/login';
-import NotFound from '../pages/notFound';
-import Home from '../pages/home';
-import PrivateRoutes from './private';
-import Register from '../pages/register';
+import Login from "../pages/login";
+import NotFound from "../pages/notFound";
+import Home from "../pages/home";
+import PrivateRoutes from "./private";
+import Register from "../pages/register";
+import DetailEmploye from "../pages/detail";
 
 export default function RoutesApp() {
-
   return (
     <Routes>
-      <Route path='/' element={<Login />} />
+      <Route path="/" element={<Login />} />
       <Route
-        path='/home'
+        path="/home"
         element={
           <PrivateRoutes>
             <Home />
-          </PrivateRoutes>}
+          </PrivateRoutes>
+        }
       />
       <Route
-        path='/register'
+        path="/register"
         element={
           <PrivateRoutes>
             <Register />
-          </PrivateRoutes>}
+          </PrivateRoutes>
+        }
+      />
+      <Route
+        path="/detail:id"
+        element={
+          <PrivateRoutes>
+            <DetailEmploye />
+          </PrivateRoutes>
+        }
       />
 
-      <Route path='*' element={<NotFound />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
-  )
+  );
 }

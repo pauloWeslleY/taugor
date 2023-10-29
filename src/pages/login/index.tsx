@@ -1,47 +1,60 @@
-import styles from './login.module.css';
-import { FormEvent, useContext, useState } from 'react';
+import styles from "./login.module.css";
+import { FormEvent, useContext, useEffect, useState } from "react";
 
-import Logo from '../../assets/logo-taugor.png';
-import { Button } from '../../components/ui/buttons/button/button';
-import { Input } from '../../components/ui/input/input';
-import { AuthContext } from '../../contexts/authContext';
-import { toast } from 'react-toastify';
+import Logo from "../../assets/logo-taugor.png";
+import { Button } from "../../components/ui/buttons/button/button";
+import { Input } from "../../components/ui/input/input";
+import { AuthContext } from "../../contexts/authContext";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [loading, setLoading] = useState<boolean>(false);
 
-  const [email, setEmail] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
-  const { signIn } = useContext(AuthContext)
+  const { signIn, isAuthenticated } = useContext(AuthContext);
+
+  const navigate = useNavigate();
+
+  // redirecionando usuário caso esteja logado
+  useEffect(() => {
+    function handleRedirectUser() {
+      if (isAuthenticated) {
+        navigate("/home");
+      }
+    }
+    handleRedirectUser();
+  }, [isAuthenticated]);
 
   async function handleSubmit(e: FormEvent) {
     //validando se o usuário está tentando logar sem ter preenchido os campos corretamente
     if (email === "" || password == "" || password.length < 6) {
-      toast.error("Preencha os campos corretamente")
-      return
+      toast.error("Preencha os campos corretamente");
+      return;
     }
 
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
 
-    await signIn({ email, password })
+    await signIn({ email, password });
 
-    setEmail("")
-    setPassword("")
+    setEmail("");
+    setPassword("");
 
-    setLoading(false)
+    setLoading(false);
   }
 
   return (
     <section className={styles.container}>
-      <img src={Logo} alt='Logo da empresa' />
+      <img src={Logo} alt="Logo da empresa" />
       <form className={styles.formLogin} onSubmit={handleSubmit}>
         <label>
           email:
           <Input
-            placeholder='Digite seu email'
-            type='email'
+            placeholder="Digite seu email"
+            type="email"
             value={email}
             setValue={setEmail}
           />
@@ -49,8 +62,8 @@ export default function Login() {
         <label>
           senha:
           <Input
-            placeholder='Digite sua senha'
-            type='password'
+            placeholder="Digite sua senha"
+            type="password"
             value={password}
             setValue={setPassword}
           />
@@ -60,11 +73,11 @@ export default function Login() {
           loading={loading}
           // desativando a ação do botão caso o usuário não preencha corretamente
           disabled={email === "" || password === "" || password.length < 6}
-          type='submit'
+          type="submit"
         >
           Fazer Login
         </Button>
       </form>
     </section>
-  )
+  );
 }
