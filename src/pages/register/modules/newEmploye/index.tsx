@@ -16,6 +16,7 @@ import { Button } from "../../../../components/ui/buttons/button/button";
 import { PdfGenerator } from "../../../../components/interface/pdf/indext";
 import { db, storage } from "../../../../services/firebaseConnection";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { format } from "date-fns";
 
 export function NewEmployer() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -128,8 +129,8 @@ export function NewEmployer() {
         email,
         address,
         tel,
-        dateAdmission,
-        birth,
+        dateAdmission: format(new Date(dateAdmission), "dd/MM/yyyy"),
+        birth: format(new Date(birth), "dd/MM/yyyy"),
         role,
         status,
         sector,
@@ -386,7 +387,9 @@ export function NewEmployer() {
           </section>
         </section>
       </form>
-      <PdfGenerator data={dataEmploye} />
+      <section className={styles.areaPdf}>
+        <PdfGenerator data={dataEmploye} />
+      </section>
     </section>
   );
 }

@@ -9,29 +9,14 @@ import {
   DataEmploye,
   EmployerContext,
 } from "../../../contexts/employerContext";
+import { handleRenderRoleOrSector } from "../../../utils";
 
-interface HandleSectorOrRole {
-  id: string;
-  action: "role" | "sector";
-}
 interface CardEmployeProps {
   employe: DataEmploye;
 }
 
 export function CardEmploye({ employe }: CardEmployeProps) {
   const { listRoles, listSectors } = useContext(EmployerContext);
-
-  function handleRoleOrSector({ id, action }: HandleSectorOrRole) {
-    if (action === "role") {
-      const role = listRoles.filter((role) => role.id === id);
-      const name = role[0].name;
-      return name;
-    } else {
-      const sector = listSectors.filter((sector) => sector.id === id);
-      const name = sector[0].name;
-      return name;
-    }
-  }
 
   return (
     <section className={styles.cardEmploye}>
@@ -73,13 +58,16 @@ export function CardEmploye({ employe }: CardEmployeProps) {
           <p>
             <strong>Setor:</strong>
             <span>
-              {handleRoleOrSector({ id: employe?.sector, action: "sector" })}
+              {handleRenderRoleOrSector({
+                id: employe?.sector,
+                list: listSectors,
+              })}
             </span>
           </p>
           <p>
             <strong>Cargo:</strong>
             <span>
-              {handleRoleOrSector({ id: employe?.role, action: "role" })}
+              {handleRenderRoleOrSector({ id: employe?.role, list: listRoles })}
             </span>
           </p>
           <p>

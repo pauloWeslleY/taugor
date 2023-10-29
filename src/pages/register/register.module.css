@@ -1,3 +1,6 @@
+.container {
+  height: 100%;
+}
 .areaButtonLocalization {
   display: flex;
   align-items: center;
