@@ -1,97 +1,86 @@
 import styles from "./home.module.css";
 import Header from "../../components/interface/header";
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Title } from "../../components/ui/title";
 import { ButtonLocation } from "../../components/ui/buttons/buttonLocation";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../services/firebaseConnection";
 
-import AvatarBoy from "../../assets/avatar-masculino.png";
-import AvatarGirl from "../../assets/avatar-feminino.png";
-import { icons } from "../../config/icons";
-import { Link } from "react-router-dom";
 import { CardEmploye } from "../../components/interface/cardEmploye";
+import {
+  EmployerContext,
+  ListDataEmploye,
+} from "../../contexts/employerContext";
+import { Link } from "react-router-dom";
 
 type Localization = "active" | "disabled";
 
 export default function Home() {
   const [localization, setLocalization] = useState<Localization>("active");
-  const [listEmployes, setListEmployes] = useState<any>([]);
+  const { listEmployes, loadingEmployes } = useContext(EmployerContext);
 
-  useEffect(() => {
-    async function loadEmployes() {
-      try {
-        const docRef = collection(db, "employes");
-
-        const response = await getDocs(docRef);
-
-        if (response) {
-          let list: any = [];
-          response.forEach((employe) => {
-            list.push({
-              uid: employe.id,
-              name: employe.data().name,
-              email: employe.data().email,
-              cpf: employe.data().cpf,
-              birth: employe.data().birth,
-              address: employe.data().address,
-              profileUrl: employe.data().profileUrl,
-              role: employe.data().role,
-              sector: employe.data().sector,
-              sex: employe.data().sex,
-              status: employe.data().status,
-              tel: employe.data().tel,
-              wage: employe.data().wage,
-              dateAdmission: employe.data().dateAdmission,
-            });
-          });
-          setListEmployes(list);
-        }
-      } catch (error) {}
-    }
-    loadEmployes();
-  }, []);
-
-  const listEmployeInactive = listEmployes.filter(
-    (employe: any) => employe?.status !== "active"
+  const listEmployeInactive: ListDataEmploye = listEmployes.filter(
+    (employe) => employe?.status !== "active"
   );
-  const listEmployeActive = listEmployes.filter(
-    (employe: any) => employe?.status === "active"
+  const listEmployeActive: ListDataEmploye = listEmployes.filter(
+    (employe) => employe?.status === "active"
   );
+
+  if (loadingEmployes) {
+    return (
+      <>
+        <Header />
+        <main>
+          <Title title="Carregando..." />
+        </main>
+      </>
+    );
+  }
 
   return (
     <>
       <Header />
       <main>
         <Title title="Funcionários" />
-        <section className={styles.headerButtons}>
-          <ButtonLocation
-            loading={false}
-            active={localization === "active"}
-            onClick={() => setLocalization("active")}
-          >
-            Funcionários Ativos
-          </ButtonLocation>
-          <ButtonLocation
-            loading={false}
-            active={localization === "disabled"}
-            onClick={() => setLocalization("disabled")}
-          >
-            Funcionários Inativos
-          </ButtonLocation>
-        </section>
-        {localization === "active" && (
-          <section className={styles.containerCardEmploye}>
-            {listEmployeActive.map((employe: any) => (
-              <CardEmploye employe={employe} />
-            ))}
-          </section>
-        )}
-        {localization === "disabled" && (
-          <section className={styles.containerCardEmploye}>
-            {listEmployeInactive.map((employe: any) => (
-              <CardEmploye employe={employe} />
-            ))}
+        {listEmployes.length > 0 ? (
+          <>
+            <section className={styles.headerButtons}>
+              <ButtonLocation
+                loading={false}
+                active={localization === "active"}
+                onClick={() => setLocalization("active")}
+              >
+                Funcionários Ativos
+              </ButtonLocation>
+              <ButtonLocation
+                loading={false}
+                active={localization === "disabled"}
+                onClick={() => setLocalization("disabled")}
+              >
+                Funcionários Inativos
+              </ButtonLocation>
+            </section>
+            {localization === "active" && (
+              <section className={styles.containerCardEmploye}>
+                {listEmployeActive.map((employe) => (
+                  <section key={employe?.id}>
+                    <CardEmploye employe={employe} />
+                  </section>
+                ))}
+              </section>
+            )}
+            {localization === "disabled" && (
+              <section className={styles.containerCardEmploye}>
+                {listEmployeInactive.map((employe) => (
+                  <section key={employe.id}>
+                    <CardEmploye employe={employe} />
+                  </section>
+                ))}
+              </section>
+            )}
+          </>
+        ) : (
+          <section className={styles.areaInfoNotEmploye}>
+            <h2>Nenhum funcionário cadastrado!</h2>
+            <Link to={"/register"}>Cadastrar um funcionário</Link>
           </section>
         )}
       </main>

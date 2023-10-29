@@ -1,25 +1,32 @@
-import styles from './roles.module.css';
+import styles from "./roles.module.css";
 import { FormEvent, useContext, useState } from "react";
-import { collection, doc, } from 'firebase/firestore';
-import { toast } from 'react-toastify';
+import { collection, doc } from "firebase/firestore";
+import { toast } from "react-toastify";
 
 import { db } from "../../../../services/firebaseConnection";
-import { icons } from '../../../../config/icons';
-import { handleRegisterRoleOrSector, editRoleOrSector } from '../../../../utils';
+import { icons } from "../../../../config/icons";
+import {
+  handleRegisterRoleOrSector,
+  editRoleOrSector,
+} from "../../../../utils";
 import { Input } from "../../../../components/ui/input/input";
 import { Button } from "../../../../components/ui/buttons/button/button";
-import { FormCenter } from '../../../../components/ui/formCenter';
-import { Modal } from '../../../../components/interface/modal';
-import { Cards } from '../../../../components/interface/cards';
-import { EmployerContext } from '../../../../contexts/employerContext';
+import { FormCenter } from "../../../../components/ui/formCenter";
+import { Modal } from "../../../../components/interface/modal";
+import { Cards } from "../../../../components/interface/cards";
+import {
+  EmployerContext,
+  RolesOrSectors,
+} from "../../../../contexts/employerContext";
 
 export function Roles() {
-
   const [role, setRole] = useState<string>("");
   const [newRole, setNewRole] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [modalNewRoleVisible, setModalNewRoleVisible] = useState<boolean>(false);
-  const [modalEditRoleVisible, setModalEditRoleVisible] = useState<boolean>(false);
+  const [modalNewRoleVisible, setModalNewRoleVisible] =
+    useState<boolean>(false);
+  const [modalEditRoleVisible, setModalEditRoleVisible] =
+    useState<boolean>(false);
   const [currentIdEdit, setCurrentIdEdit] = useState<string>("");
 
   const { listRoles, setListRoles } = useContext(EmployerContext);
@@ -35,12 +42,16 @@ export function Roles() {
 
     if (roleExist.length > 0) {
       toast.error("Esse cargo já está cadastrado!");
-      setLoading(false)
+      setLoading(false);
       return;
-    };
+    }
 
     const docRef = collection(db, "roles");
-    const response = await handleRegisterRoleOrSector({ name: nameUpper, docRef, setLoading });
+    const response = await handleRegisterRoleOrSector({
+      name: nameUpper,
+      docRef,
+      setLoading,
+    });
 
     //caso o cadastro dê certo response recebe o objeto que foi criado armazenando name e id
     //para ser adicionado no state que renderiza os cargos
@@ -49,9 +60,9 @@ export function Roles() {
     }
     setRole("");
     setLoading(false);
-  };
+  }
 
-  async function handleModalEdit(item: { id: string, name: string }) {
+  async function handleModalEdit(item: RolesOrSectors) {
     setModalEditRoleVisible(true);
     setCurrentIdEdit(item.id);
     // setando os 2 valores para validar se o usuário fez alguma alteração
@@ -59,7 +70,7 @@ export function Roles() {
     setNewRole(item.name);
   }
 
-  //  Editando cargo 
+  //  Editando cargo
   async function handleEdit() {
     setLoading(true);
 
@@ -75,7 +86,9 @@ export function Roles() {
       //atualizando o state local com o novo nome
       const newListRoles = listRoles;
       //identificando o index do item atualizado
-      const indexRoleUpdate = newListRoles.findIndex((item) => item.id === currentIdEdit);
+      const indexRoleUpdate = newListRoles.findIndex(
+        (item) => item.id === currentIdEdit
+      );
 
       newListRoles[indexRoleUpdate].name = newRoleUpper;
 
@@ -83,7 +96,7 @@ export function Roles() {
 
       setLoading(false);
       handleCloseEdit();
-      return
+      return;
     } else {
       toast.error("Erro ao atualizar cargo!");
     }
@@ -95,13 +108,13 @@ export function Roles() {
   function handleClose() {
     setRole("");
     setModalNewRoleVisible(false);
-  };
+  }
 
   function handleCloseEdit() {
     setModalEditRoleVisible(false);
-    setCurrentIdEdit('')
+    setCurrentIdEdit("");
     setRole("");
-    setNewRole('');
+    setNewRole("");
   }
 
   return (
@@ -118,7 +131,7 @@ export function Roles() {
 
       {modalNewRoleVisible && (
         <Modal handleClose={handleClose} title={"Cadastre um Cargo"}>
-          <FormCenter >
+          <FormCenter>
             <label>
               Cargo:
               <Input
@@ -141,7 +154,7 @@ export function Roles() {
 
       {modalEditRoleVisible && currentIdEdit !== "" && (
         <Modal handleClose={handleCloseEdit} title={"Atualizando Cargo"}>
-          <FormCenter >
+          <FormCenter>
             <label>
               Setor:
               <Input
@@ -161,7 +174,6 @@ export function Roles() {
           </FormCenter>
         </Modal>
       )}
-
     </section>
   );
-};
+}

@@ -1,5 +1,7 @@
 .container {
   padding: 1rem;
+  display: flex;
+  gap: 1rem;
 }
 .headerForm {
   display: flex;
@@ -38,9 +40,10 @@
 .infoImg {
   display: flex;
   flex-direction: column;
+  padding-left: 1rem;
 }
 .infoImg strong {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   display: flex;
   gap: 0.5rem;
 }
@@ -53,10 +56,11 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  cursor: pointer;
 
+  margin-bottom: 1rem;
   font-weight: 500;
   color: var(--blue-700);
+  cursor: pointer;
 }
 .inputFile:hover span {
   background-color: var(--blue-900);

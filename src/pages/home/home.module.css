@@ -12,3 +12,25 @@
   justify-items: center;
   padding: 0 1rem;
 }
+.areaInfoNotEmploye {
+  background-color: var(--gray-100);
+  padding: 1rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.areaInfoNotEmploye h2 {
+  margin-bottom: 1rem;
+}
+.areaInfoNotEmploye a {
+  padding: 0.7rem 1rem;
+  background-color: var(--blue-700);
+  font-weight: 500;
+  color: var(--white);
+  border-radius: var(--border-radius);
+}
+.areaInfoNotEmploye a:hover {
+  background-color: var(--blue-900);
+}
