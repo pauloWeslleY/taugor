@@ -28,7 +28,7 @@ export default function RoutesApp() {
         }
       />
       <Route
-        path="/detail:id"
+        path="/detail/:id"
         element={
           <PrivateRoutes>
             <DetailEmploye />

@@ -74,7 +74,7 @@ export function CardEmploye({ employe }: CardEmployeProps) {
             <strong>Admissão:</strong>
             <span>{employe?.dateAdmission}</span>
           </p>
-          <Link to={"/"} className={styles.detailLink}>
+          <Link to={`/detail/${employe.id}`} className={styles.detailLink}>
             <span>{icons.plus}</span> Detalhes
           </Link>
         </section>
