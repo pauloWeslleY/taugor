@@ -6,14 +6,20 @@ import {
   Document,
   StyleSheet,
 } from "@react-pdf/renderer";
-import { DataNewEmployeData } from "../../../contexts/employerContext";
+import { DataNewEmployeData, EmployerContext } from "../../../contexts/employerContext";
 import { format } from "date-fns";
+import { handleRenderRoleOrSector } from "../../../utils";
+import { useContext } from "react";
 
 interface PdfProps {
   data: DataNewEmployeData;
+  action: "edit" | "new"
 }
 
-export function PdfGenerator({ data }: PdfProps) {
+export function PdfGenerator({ data, action }: PdfProps) {
+
+  const { listRoles, listSectors } = useContext(EmployerContext);
+
   return (
     <PDFViewer style={styles.container}>
       <Document style={styles.document}>
@@ -35,20 +41,31 @@ export function PdfGenerator({ data }: PdfProps) {
 
           <Text style={styles.subTitle}>Informações de Trabalho </Text>
           <View style={styles.areaInfo}>
-            <Text>Cargo: {data?.role}</Text>
-            <Text>Setor: {data?.sector}</Text>
+            {action === "edit" ? (
+
+              <>
+                <Text>Cargo: {handleRenderRoleOrSector({ id: data?.role, list: listRoles })}</Text>
+                <Text>Setor: {handleRenderRoleOrSector({ id: data?.sector, list: listSectors })}</Text>
+              </>
+            ) : (
+              <>
+                <Text>Cargo: {data?.role}</Text>
+                <Text>Setor: {data?.sector}</Text>
+              </>
+
+            )}
             <Text>Data de Admissão: {data?.dateAdmission}</Text>
-            <Text>Salário: {data?.wage}</Text>
+            <Text>Salário: R$ {data?.wage}</Text>
           </View>
 
           <View style={styles.footerPdf}>
             <Text>
-              Criando documento em: {format(new Date(), "dd/MM/yyyy")}
+              {action === "edit" ? "Documento editado em:" : "Documento criado em:"} {format(new Date(), "dd/MM/yyyy")}
             </Text>
           </View>
         </Page>
-      </Document>
-    </PDFViewer>
+      </Document >
+    </PDFViewer >
   );
 }
 const styles = StyleSheet.create({

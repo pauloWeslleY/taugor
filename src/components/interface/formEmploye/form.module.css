@@ -1,0 +1,144 @@
+.container {
+  height: 100%;
+  display: flex;
+  gap: 1rem;
+}
+.headerForm {
+  display: flex;
+  gap: 1rem;
+}
+.areaName {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.areaSex {
+  margin: 1rem 0;
+  display: flex;
+  gap: 1rem;
+}
+.areaSex label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  cursor: pointer;
+}
+
+/* ----------------- */
+
+.areaImgProfile {
+  width: 100%;
+  display: flex;
+}
+.areaImgProfile img {
+  width: 100px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+}
+.infoImg {
+  display: flex;
+  flex-direction: column;
+  padding-left: 1rem;
+}
+.infoImg strong {
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+.infoImg strong span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.inputFile {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  margin-bottom: 1rem;
+  font-weight: 500;
+  color: var(--blue-700);
+  cursor: pointer;
+}
+.inputFile:hover span {
+  background-color: var(--blue-900);
+}
+.inputFile:hover {
+  color: var(--blue-900);
+}
+.inputFile span {
+  height: 30px;
+  width: 30px;
+  background-color: var(--blue-700);
+  color: var(--white);
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inputFile input {
+  display: none;
+}
+/* ---------------------- */
+
+.formGrid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+.areaDate {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.areaDate label {
+  width: 100%;
+}
+.areaFooterForm {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.areaFooterForm select {
+  height: 40px;
+  padding: 0 1rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  cursor: pointer;
+}
+.areaFooterForm select option {
+  height: 30px;
+}
+.areaSelect {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+.areaSelect button {
+  align-self: flex-end;
+}
+
+.areaPdf {
+  width: 100%;
+  height: 550px;
+}
+
+.areaPdfGenerator {
+  height: 500px;
+  min-width: 400px;
+  background-color: aliceblue;
+}
+
+@media screen and (max-width: 1024px) {
+  .areaPdf {
+    display: none;
+  }
+}
