@@ -17,7 +17,7 @@ import { ModalEdit } from "./modules/modalEdit";
 
 export default function DetailEmploye() {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [employe, setEmploye] = useState<DataEmploye | null>(null)
+  const [employe, setEmploye] = useState<DataEmploye | null>(null);
   const { listEmployes, listRoles, listSectors } = useContext(EmployerContext);
   const { id } = useParams();
 
@@ -28,15 +28,16 @@ export default function DetailEmploye() {
     );
     const employeSelected: DataEmploye = listEmployeSelected[0];
     setEmploye(employeSelected);
-  }, [listEmployes])
+  }, [listEmployes]);
 
   if (!employe) {
-    return <div></div>
+    return <div></div>;
   }
 
   const {
     name,
     profileUrl,
+    created_at,
     sex,
     birth,
     cpf,
@@ -48,6 +49,8 @@ export default function DetailEmploye() {
     dateAdmission,
     wage,
   } = employe!;
+
+  console.log(created_at);
 
   return (
     <>
@@ -151,6 +154,7 @@ export default function DetailEmploye() {
           <ModalEdit
             setValue={setModalVisible}
             currentDataEmploye={employe}
+            setEmploye={setEmploye}
           />
         )}
       </main>

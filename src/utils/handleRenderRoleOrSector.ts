@@ -6,6 +6,6 @@ interface HandleSectorOrRole {
 }
 
 export function handleRenderRoleOrSector({ id, list }: HandleSectorOrRole) {
-  const roleOrSector = list.filter((item) => item.id === id);
-  return roleOrSector[0].name;
+  const roleOrSector = list.filter((item) => item?.id === id);
+  return roleOrSector[0]?.name;
 }

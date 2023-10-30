@@ -99,6 +99,15 @@
 .areaDate label {
   width: 100%;
 }
+.areaStatusEmploye {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.areaStatusEmploye button {
+  max-width: 150px;
+}
 .areaFooterForm {
   display: flex;
   align-items: center;
@@ -139,6 +148,11 @@
 
 @media screen and (max-width: 1024px) {
   .areaPdf {
+    display: none;
+  }
+}
+@media screen and (min-width: 1024px) {
+  .areaButtonPdf {
     display: none;
   }
 }

@@ -21,7 +21,7 @@ import { format } from "date-fns";
 export function NewEmployer() {
   const [loading, setLoading] = useState<boolean>(false);
   const [profileFile, setProfileFile] = useState<File | null>(null);
-  const [dataEmploye, setDataEmploye] = useState<DataNewEmployeData>({
+  const dataEmployeReset: DataNewEmployeData = {
     name: "",
     sex: "masculine",
     cpf: "",
@@ -35,7 +35,9 @@ export function NewEmployer() {
     tel: "",
     wage: "",
     birth: "",
-  });
+  };
+  const [dataEmploye, setDataEmploye] =
+    useState<DataNewEmployeData>(dataEmployeReset);
 
   const { listRoles, listSectors, listEmployes, setListEmployes } =
     useContext(EmployerContext);
@@ -165,6 +167,7 @@ export function NewEmployer() {
           profileUrl: url,
         });
       }
+      setDataEmploye(dataEmployeReset);
       toast.success("Funcionário cadastrado com sucesso!");
     } catch (error) {
       toast.error("Erro ao cadastrar Funcionário!");
@@ -388,7 +391,7 @@ export function NewEmployer() {
         </section>
       </form>
       <section className={styles.areaPdf}>
-        <PdfGenerator data={dataEmploye} />
+        <PdfGenerator data={dataEmploye} action="new" />
       </section>
     </section>
   );

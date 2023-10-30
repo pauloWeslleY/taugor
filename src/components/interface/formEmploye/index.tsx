@@ -1,20 +1,23 @@
 import styles from "./form.module.css";
-import { DataEmploye, EmployerContext } from "../../../contexts/employerContext";
+import {
+  DataEmploye,
+  EmployerContext,
+} from "../../../contexts/employerContext";
 import { Input } from "../../ui/input/input";
 
 import AvatarBoy from "../../../assets/avatar-masculino.png";
 import AvatarGirl from "../../../assets/avatar-feminino.png";
 import { icons } from "../../../config/icons";
 import { Button } from "../../ui/buttons/button/button";
-import { useContext, useState } from "react";
-import { handleRenderRoleOrSector } from "../../../utils";
+import { ChangeEvent, FormEvent, useContext, useState } from "react";
 import { PdfGenerator } from "../pdf/indext";
 import { Modal } from "../modal";
+import { toast } from "react-toastify";
 
 interface FormEmployeProps {
   currentDataEmploye: DataEmploye;
   handleSubmit: (e: any) => Promise<void>;
-  action: "edit" | "new"
+  action: "edit" | "new";
 }
 
 interface ChangeDataEmploye {
@@ -22,9 +25,16 @@ interface ChangeDataEmploye {
   value: string | null;
 }
 
-export function FormEmploye({ currentDataEmploye, handleSubmit, action }: FormEmployeProps) {
-  const [dataEmploye, setDataEmploye] = useState<DataEmploye>(currentDataEmploye);
+export function FormEmploye({
+  currentDataEmploye,
+  handleSubmit,
+  action,
+}: FormEmployeProps) {
+  const [dataEmploye, setDataEmploye] =
+    useState<DataEmploye>(currentDataEmploye);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [profileFile, setProfileFile] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const { listRoles, listSectors } = useContext(EmployerContext);
 
   function handleChange({ prop, value }: ChangeDataEmploye) {
@@ -33,7 +43,25 @@ export function FormEmploye({ currentDataEmploye, handleSubmit, action }: FormEm
       handleValidate();
     }
   }
-  function handleChangeImg(e: any) { }
+  function handleChangeImg(e: ChangeEvent<HTMLInputElement>) {
+    if (e.target.files) {
+      const file = e.target.files[0];
+      // aceitando apenas imagens em png ou jpeg
+      if (file.type === "image/jpeg" || file.type === "image/png") {
+        // criando uma url local para exibir a foto que o usuário escolheu
+        handleChange({ prop: "profileUrl", value: URL.createObjectURL(file) });
+        setProfileFile(file);
+      } else {
+        toast.error("Escolha uma imagen no formato JPEG ou PNG");
+        return;
+      }
+    }
+  }
+
+  function handleRemoveImg() {
+    handleChange({ prop: "profileUrl", value: null });
+    setProfileFile(null);
+  }
 
   // validando se o usuário esta cadastrando ou editando um novo functionário
   // para poder validar se foi feita alguma alteração nos valores já existentes
@@ -75,16 +103,22 @@ export function FormEmploye({ currentDataEmploye, handleSubmit, action }: FormEm
       }
       return false;
     }
-
   }
 
   function handleCloseModalPdf() {
     setModalVisible(false);
   }
 
+  async function handleSubmitForm(e: FormEvent) {
+    setLoading(true);
+    e.preventDefault();
+    await handleSubmit({ dataEmploye, file: profileFile });
+    setLoading(false);
+  }
+
   return (
     <section className={styles.container}>
-      <form onSubmit={(e) => handleSubmit(e)}>
+      <form onSubmit={(e) => handleSubmitForm(e)}>
         {/* Inicio do header do formulário */}
         <section className={styles.headerForm}>
           <section className={styles.areaName}>
@@ -150,7 +184,7 @@ export function FormEmploye({ currentDataEmploye, handleSubmit, action }: FormEm
                   disabled={!dataEmploye?.profileUrl}
                   loading={false}
                   type="button"
-                // onClick={handleRemoveImg}
+                  onClick={handleRemoveImg}
                 >
                   Remover Foto
                 </Button>
@@ -173,7 +207,9 @@ export function FormEmploye({ currentDataEmploye, handleSubmit, action }: FormEm
           <label>
             Telefone:
             <Input
-              setValue={(e) => handleChange({ prop: "tel", value: e as string })}
+              setValue={(e) =>
+                handleChange({ prop: "tel", value: e as string })
+              }
               value={dataEmploye.tel}
               placeholder="(xx) xxxxx-xxxx"
             />
@@ -191,7 +227,9 @@ export function FormEmploye({ currentDataEmploye, handleSubmit, action }: FormEm
           <label>
             CPF:
             <Input
-              setValue={(e) => handleChange({ prop: "cpf", value: e as string })}
+              setValue={(e) =>
+                handleChange({ prop: "cpf", value: e as string })
+              }
               value={dataEmploye.cpf}
               placeholder="Digite um CPF"
             />
@@ -219,23 +257,57 @@ export function FormEmploye({ currentDataEmploye, handleSubmit, action }: FormEm
             </label>
           </section>
         </section>
+        <section className={styles.areaStatusEmploye}>
+          <p>
+            Status:{" "}
+            <span>
+              {dataEmploye.status === "active" && "ATIVO"}
+              {dataEmploye.status === "fired" && "DEMITIDO"}
+              {dataEmploye.status === "end_of_contract" &&
+                "CONTRATO FINALIZADO"}
+            </span>
+          </p>
+          {dataEmploye?.status !== "active" ? (
+            <Button loading={false} disabled={false}>
+              Ativar Funcionário
+            </Button>
+          ) : (
+            <>
+              <Button
+                loading={false}
+                disabled={false}
+                style={{
+                  background: "#df5050",
+                }}
+              >
+                Demitir Funcionário
+              </Button>
+              <Button 
+              loading={false} 
+              disabled={false}
+              style={{
+                background: "#df5050",
+              }}
+              >
+                Finalizar Contrato
+              </Button>
+            </>
+          )}
+        </section>
 
         <section className={styles.areaFooterForm}>
           <section className={styles.areaSelect}>
             <section>
               <p>Cargo:</p>
               <select
+                value={dataEmploye.role}
                 onChange={(e) =>
                   handleChange({ prop: "role", value: e.target.value })
                 }
               >
-                {action === "edit" ? (
-                  <option>
-                    {handleRenderRoleOrSector({ id: dataEmploye?.role, list: listRoles })}
-                  </option>
-                ) : (
-                  <option value={""}>Cargos</option>
-                )}
+                <option value={""} key={0}>
+                  CARGOS
+                </option>
                 {listRoles.map((role) => (
                   <option key={role.id} value={role.id}>
                     {role.name}
@@ -250,13 +322,9 @@ export function FormEmploye({ currentDataEmploye, handleSubmit, action }: FormEm
                   handleChange({ prop: "sector", value: e.target.value })
                 }
               >
-                {action === "edit" ? (
-                  <option>
-                    {handleRenderRoleOrSector({ id: dataEmploye?.sector, list: listSectors })}
-                  </option>
-                ) : (
-                  <option value={""}>Setores</option>
-                )}
+                <option value={""} key={0}>
+                  SETORES
+                </option>
                 {listSectors.map((sector) => (
                   <option key={sector.id} value={sector.id}>
                     {sector.name}
@@ -272,29 +340,29 @@ export function FormEmploye({ currentDataEmploye, handleSubmit, action }: FormEm
                 setValue={(e) =>
                   handleChange({ prop: "wage", value: e as string })
                 }
-                value={dataEmploye.wage}
+                value={dataEmploye?.wage}
                 placeholder="R$: 00,00"
               />
             </label>
-            <Button disabled={handleValidate()} loading={false} type="submit">
+            <Button disabled={handleValidate()} loading={loading} type="submit">
               {action === "edit" ? "Editar" : "Cadastrar"}
             </Button>
           </section>
         </section>
-        {action === "edit" && (
+
+        <section className={styles.areaButtonPdf}>
           <Button
             loading={false}
             disabled={false}
             type="button"
             onClick={() => setModalVisible(true)}
-
             style={{
-              marginTop: 20
+              marginTop: 20,
             }}
           >
             Gerar PDF
           </Button>
-        )}
+        </section>
       </form>
       <section className={styles.areaPdf}>
         <PdfGenerator data={dataEmploye} action="edit" />
