@@ -10,12 +10,12 @@ export default function Header() {
     <header className={styles.header}>
       <img src={Logo} alt='Logo da empresa' />
       <nav className={styles.nav}>
-        {pathname === "/register" &&
+        {pathname !== "/home" &&
           <Link to={"/home"}>
             Voltar
           </Link>
         }
-        {pathname !== "/register" &&
+        {pathname === "/home" &&
           <Link to={"/register"}>
             Cadastros
           </Link>
