@@ -39,6 +39,7 @@
 }
 .info {
   width: 100%;
+  cursor: not-allowed;
 }
 .info .data {
   background-color: var(--white);
@@ -69,4 +70,24 @@
 }
 .status {
   background-color: rgb(194, 13, 13);
+}
+
+@media screen and (max-width: 768px) {
+  .headerCard {
+    flex-direction: column;
+  }
+  .headerCard img {
+    width: 100%;
+    max-width: 300px;
+    height: 300px;
+    align-self: center;
+    margin-bottom: 1rem;
+  }
+  .areaInfo {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
 }

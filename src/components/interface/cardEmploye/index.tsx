@@ -34,10 +34,10 @@ export function CardEmploye({ employe }: CardEmployeProps) {
     <ChakraProvider>
       <Stack
         borderWidth="1px"
+        w={"full"}
+        maxWidth={"400px"}
         borderRadius="lg"
-        w={{ sm: "100%", md: "400px" }}
-        height={{ sm: "250px" }}
-        direction={{ base: "column", md: "row" }}
+        direction={{ md: "row" }}
         bg={useColorModeValue("white", "gray.900")}
         boxShadow={"2xl"}
         padding={2}
@@ -46,15 +46,17 @@ export function CardEmploye({ employe }: CardEmployeProps) {
           {employe?.profileUrl ? (
             <Image
               objectFit="cover"
-              boxSize="100%"
+              w={"full"}
+              h={"250px"}
               src={employe?.profileUrl}
               alt="Foto de perfil"
               borderRadius={"0.2rem"}
             />
           ) : (
             <Image
+              w={"full"}
+              h={"250px"}
               objectFit="cover"
-              boxSize="100%"
               src={employe?.sex === "masculine" ? AvatarBoy : AvatarGirl}
               alt="Foto de perfil"
               borderRadius={"0.2rem"}

@@ -143,7 +143,6 @@
 .areaPdfGenerator {
   height: 500px;
   min-width: 400px;
-  background-color: aliceblue;
 }
 
 @media screen and (max-width: 1024px) {
@@ -154,5 +153,32 @@
 @media screen and (min-width: 1024px) {
   .areaButtonPdf {
     display: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container form {
+    margin: 0 auto;
+  }
+  .headerForm {
+    flex-direction: column-reverse;
+    margin: 0 auto;
+  }
+  .areaImgProfile {
+    align-items: center;
+    justify-content: center;
+  }
+  .formGrid {
+    display: flex;
+    flex-direction: column;
+  }
+  .areaFooterForm {
+    flex-direction: column;
+  }
+  .areaFooterForm section {
+    width: 100%;
+  }
+  .areaFooterForm section select {
+    width: 100%;
   }
 }

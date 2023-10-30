@@ -67,18 +67,14 @@ export default function Home() {
                   </section>
                 )}
                 {listEmployeActive.map((employe) => (
-                  <section key={employe?.id}>
-                    <CardEmploye employe={employe} />
-                  </section>
+                  <CardEmploye employe={employe} key={employe?.id} />
                 ))}
               </section>
             )}
             {localization === "disabled" && (
               <section className={styles.containerCardEmploye}>
                 {listEmployeInactive.map((employe) => (
-                  <section key={employe.id}>
-                    <CardEmploye employe={employe} />
-                  </section>
+                  <CardEmploye employe={employe} key={employe?.id} />
                 ))}
               </section>
             )}
