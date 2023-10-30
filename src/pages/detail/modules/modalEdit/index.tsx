@@ -39,7 +39,6 @@ export function ModalEdit({
   const docRef = doc(db, "employes", id!);
 
   async function addHitory(dataEmploye: DataEmploye) {
-    console.log("chamou a função");
     try {
       const hitoryRef = collection(docRef, "history");
 
@@ -56,7 +55,6 @@ export function ModalEdit({
       newListEmployes[indexUpdateEmploye] = dataEmploye;
       setListEmployes(newListEmployes);
 
-      console.log("data e", dataEmploye);
       setEmploye(dataEmploye);
 
       setListHistory([
