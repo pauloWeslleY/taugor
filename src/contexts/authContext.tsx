@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
 
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth } from "../services/firebaseConnection";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,7 @@ interface AuthContextProps {
   isAuthenticated: boolean;
   loading: boolean;
   signIn: (credential: SignInProps) => Promise<void>;
+  logOutUser: () => Promise<void>;
 }
 
 interface SignInProps {
@@ -31,11 +32,8 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     async function userAuth() {
-      // verificando se o usuário já está logado
-
       const storageUserLocal = localStorage.getItem(localStorageKey);
       if (storageUserLocal) {
-        //caso tenha usuário logado irei redirecionar para a página home
         setUser(JSON.parse(storageUserLocal));
         setLoading(false);
         return;
@@ -50,7 +48,6 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   async function signIn({ email, password }: SignInProps) {
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
-
       const userData = {
         email,
       };
@@ -59,12 +56,10 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
       navigate("/home");
     } catch (error: any) {
       if (error.code === "auth/user-not-found") {
-        //usuário não cadastrado
         toast.error("Usuário não encontrado!");
         return;
       }
       if (error.code === "auth/wrong-password") {
-        //usuário digitou a senha errada
         toast.error("Senha incorreta!");
         return;
       }
@@ -75,12 +70,23 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.setItem(localStorageKey, JSON.stringify(data));
   }
 
+  async function logOutUser() {
+    try {
+      await signOut(auth);
+      localStorage.removeItem(localStorageKey);
+      setUser(null);
+    } catch (error) {
+      toast.error("Erro ao deslogar usuário");
+    }
+  }
+
   return (
     <AuthContext.Provider
       value={{
         isAuthenticated: !!user,
         loading,
         signIn,
+        logOutUser,
       }}
     >
       {children}

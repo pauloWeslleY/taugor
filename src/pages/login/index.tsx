@@ -18,7 +18,6 @@ export default function Login() {
 
   const navigate = useNavigate();
 
-  // redirecionando usuário caso esteja logado
   useEffect(() => {
     function handleRedirectUser() {
       if (isAuthenticated) {
@@ -29,7 +28,6 @@ export default function Login() {
   }, [isAuthenticated]);
 
   async function handleSubmit(e: FormEvent) {
-    //validando se o usuário está tentando logar sem ter preenchido os campos corretamente
     if (email === "" || password == "" || password.length < 6) {
       toast.error("Preencha os campos corretamente");
       return;
@@ -71,7 +69,6 @@ export default function Login() {
 
         <Button
           loading={loading}
-          // desativando a ação do botão caso o usuário não preencha corretamente
           disabled={email === "" || password === "" || password.length < 6}
           type="submit"
         >

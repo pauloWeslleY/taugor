@@ -23,7 +23,6 @@ export async function handleRegisterRoleOrSector({
     const nameUpper = name.toLocaleUpperCase();
     const response = await addDoc(docRef, { name: nameUpper });
 
-    //caso dê certo a criação de cargo quero atualizar meu estado local
     const newDoc = {
       name,
       id: response.id,

@@ -60,6 +60,12 @@ export default function Home() {
             </section>
             {localization === "active" && (
               <section className={styles.containerCardEmploye}>
+                {listEmployeActive.length === 0 && (
+                  <section className={styles.areaLinkNewEmploye}>
+                    <h2>Nenhum Funcionário Ativo</h2>
+                    <Link to={"/register"}>Cadastrar um funcionário</Link>
+                  </section>
+                )}
                 {listEmployeActive.map((employe) => (
                   <section key={employe?.id}>
                     <CardEmploye employe={employe} />

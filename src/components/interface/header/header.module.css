@@ -8,3 +8,18 @@
 .header img {
   width: 150px;
 }
+.nav a {
+  background-color: var(--gray-100);
+  padding: 0.7rem 1rem;
+  border-radius: var(--border-radius);
+}
+.nav a:hover {
+  background-color: var(--blue-700);
+  color: var(--white);
+}
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}

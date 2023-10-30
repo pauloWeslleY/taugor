@@ -20,6 +20,8 @@ interface EmployerContextProps {
   listEmployes: ListDataEmploye;
   setListEmployes: Dispatch<SetStateAction<ListDataEmploye>>;
   loadingEmployes: boolean;
+  setListHistory: Dispatch<SetStateAction<ListDataEmploye>>;
+  listHistory: ListDataEmploye;
 }
 
 export interface RolesOrSectors {
@@ -27,16 +29,11 @@ export interface RolesOrSectors {
   id: string;
 }
 
-export type ListRolesOrSectors = RolesOrSectors[];
-export type ListDataEmploye = DataEmploye[];
+export type Status = "active" | "fired" | "end_of_contract";
 
-export interface DataEmploye extends DataNewEmployeData {
-  id: string;
-  created_at: Date | Timestamp;
-}
-
-type Status = "active" | "fired" | "end_of_contract";
-export interface DataNewEmployeData {
+export interface DataEmploye {
+  id?: string;
+  created_at?: Date | Timestamp;
   name: string;
   profileUrl: string | null;
   sex: string;
@@ -51,6 +48,8 @@ export interface DataNewEmployeData {
   sector: string;
   wage: string;
 }
+export type ListRolesOrSectors = RolesOrSectors[];
+export type ListDataEmploye = DataEmploye[];
 
 export const EmployerContext = createContext({} as EmployerContextProps);
 
@@ -62,10 +61,10 @@ export default function EmployerProvider({
   const [listRoles, setListRoles] = useState<ListRolesOrSectors>([]);
   const [listSectors, setListSectors] = useState<ListRolesOrSectors>([]);
   const [listEmployes, setListEmployes] = useState<ListDataEmploye>([]);
+  const [listHistory, setListHistory] = useState<ListDataEmploye>([]);
 
   const [loadingEmployes, setLoadingEmployes] = useState<boolean>(true);
 
-  // buscando cargos e setores
   useEffect(() => {
     async function loadingRoles() {
       try {
@@ -98,7 +97,6 @@ export default function EmployerProvider({
     loadingSectors();
   }, []);
 
-  // buscando funcionarios
   useEffect(() => {
     async function loadEmployes() {
       setLoadingEmployes(true);
@@ -149,6 +147,8 @@ export default function EmployerProvider({
         listEmployes,
         setListEmployes,
         loadingEmployes,
+        setListHistory,
+        listHistory,
       }}
     >
       {children}

@@ -1,52 +1,5 @@
 .container {
-  height: 100%;
-}
-.containerDataEmploye {
-  padding: 1rem;
-  background-color: var(--gray-100);
-}
-.dataEmploye {
-  max-width: 850px;
-  margin: 0 auto;
-}
-.profileEmploye {
-  display: flex;
-  gap: 1rem;
   padding-bottom: 2rem;
-  border-bottom: 2px solid var(--blue-700);
-  margin-bottom: 1rem;
-}
-.profileEmploye img {
-  width: 150px;
-  object-fit: cover;
-  background-color: var(--gray-100);
-  border-radius: var(--border-radius);
-}
-.detailEmploye {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-.infoEmploye {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-}
-.infoEmploye h1 {
-  margin-bottom: 2rem;
-}
-.gridDetailUser {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.2rem;
-  margin-bottom: 0.3rem;
-}
-.info {
-  background-color: var(--white);
-  padding: 0.3rem 1rem;
-  border-radius: var(--border-radius);
-  box-shadow: inset 0 0 8px #00000036;
-  cursor: not-allowed;
 }
 /* ------------------- */
 

@@ -37,7 +37,6 @@ export function Sectors() {
 
     const nameUpper = sector.toLocaleUpperCase();
 
-    // validando se o usuário está tentando cadastrar um cargo já existente
     const roleExist = listSectors.filter((item) => item.name === nameUpper);
 
     if (roleExist.length > 0) {
@@ -53,8 +52,6 @@ export function Sectors() {
       setLoading,
     });
 
-    //caso o cadastro dê certo response recebe o objeto que foi criado armazenando name e id
-    //para ser adicionado no state que renderiza os cargos
     if (response) {
       setListSectors([...listSectors, response]);
     }
@@ -66,7 +63,6 @@ export function Sectors() {
   async function handleEdit() {
     setLoading(true);
 
-    // função retorna boolean para alteração de state local
     const docRef = doc(db, "sectors", currentIdEdit);
 
     const newSectorUpper = newSector.toLocaleUpperCase();
@@ -75,9 +71,7 @@ export function Sectors() {
     if (response) {
       toast.success("Sucesso ao atualizar setor");
 
-      //atualizando o state local com o novo nome
       const newListSectors = listSectors;
-      //identificando o index do item atualizado
       const indexSectorUpdate = newListSectors.findIndex(
         (item) => item.id === currentIdEdit
       );
@@ -100,11 +94,9 @@ export function Sectors() {
   async function handleModalEdit(item: RolesOrSectors) {
     setModalEditSectorVisible(true);
     setCurrentIdEdit(item.id);
-    // setando os 2 valores para validar se o usuário fez alguma alteração
     setSector(item.name);
     setNewSector(item.name);
   }
-  //fechar modal
   function handleClose() {
     setSector("");
     setModalNewSectorVisible(false);

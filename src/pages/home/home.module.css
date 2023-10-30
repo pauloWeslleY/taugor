@@ -1,5 +1,7 @@
 .headerButtons {
-  padding: 1rem;
+  border-bottom: 2px solid var(--blue-700);
+  padding: 1rem 1rem 0 1rem;
+  margin-bottom: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -11,6 +13,19 @@
   gap: 1rem;
   justify-items: center;
   padding: 0 1rem;
+}
+.areaLinkNewEmploye {
+  text-align: center;
+}
+.areaLinkNewEmploye h2 {
+  margin-bottom: 1rem;
+}
+.areaLinkNewEmploye a {
+  color: var(--blue-900);
+  font-weight: 500;
+}
+.areaLinkNewEmploye a:hover {
+  text-decoration: underline;
 }
 .areaInfoNotEmploye {
   background-color: var(--gray-100);

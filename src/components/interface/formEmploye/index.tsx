@@ -1,23 +1,34 @@
 import styles from "./form.module.css";
+import { ChangeEvent, FormEvent, useContext, useState } from "react";
+import { toast } from "react-toastify";
+
+import { PdfGenerator } from "../pdf/indext";
+import { Modal } from "../modal";
+import { Input } from "../../ui/input/input";
+import { Button } from "../../ui/buttons/button/button";
 import {
   DataEmploye,
   EmployerContext,
+  Status,
 } from "../../../contexts/employerContext";
-import { Input } from "../../ui/input/input";
 
 import AvatarBoy from "../../../assets/avatar-masculino.png";
 import AvatarGirl from "../../../assets/avatar-feminino.png";
 import { icons } from "../../../config/icons";
-import { Button } from "../../ui/buttons/button/button";
-import { ChangeEvent, FormEvent, useContext, useState } from "react";
-import { PdfGenerator } from "../pdf/indext";
-import { Modal } from "../modal";
-import { toast } from "react-toastify";
+
+export interface HandleChangeStatusProps {
+  action: Status;
+  dataEmploye: DataEmploye;
+}
 
 interface FormEmployeProps {
-  currentDataEmploye: DataEmploye;
+  currentDataEmploye?: DataEmploye;
   handleSubmit: (e: any) => Promise<void>;
   action: "edit" | "new";
+  handlechangeStatus?: ({
+    action,
+    dataEmploye,
+  }: HandleChangeStatusProps) => Promise<void>;
 }
 
 interface ChangeDataEmploye {
@@ -26,15 +37,34 @@ interface ChangeDataEmploye {
 }
 
 export function FormEmploye({
+  handlechangeStatus,
   currentDataEmploye,
   handleSubmit,
   action,
 }: FormEmployeProps) {
-  const [dataEmploye, setDataEmploye] =
-    useState<DataEmploye>(currentDataEmploye);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const resetDataEmploye: DataEmploye = {
+    name: "",
+    sex: "masculine",
+    cpf: "",
+    profileUrl: null,
+    address: "",
+    dateAdmission: "",
+    email: "",
+    role: "",
+    sector: "",
+    status: "active",
+    tel: "",
+    wage: "",
+    birth: "",
+  };
+  const [dataEmploye, setDataEmploye] = useState<DataEmploye>(
+    currentDataEmploye ? currentDataEmploye : resetDataEmploye
+  );
   const [profileFile, setProfileFile] = useState<any>(null);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [loadingUpdateStatus, setLoadingUpdateStatus] =
+    useState<boolean>(false);
   const { listRoles, listSectors } = useContext(EmployerContext);
 
   function handleChange({ prop, value }: ChangeDataEmploye) {
@@ -46,9 +76,7 @@ export function FormEmploye({
   function handleChangeImg(e: ChangeEvent<HTMLInputElement>) {
     if (e.target.files) {
       const file = e.target.files[0];
-      // aceitando apenas imagens em png ou jpeg
       if (file.type === "image/jpeg" || file.type === "image/png") {
-        // criando uma url local para exibir a foto que o usuário escolheu
         handleChange({ prop: "profileUrl", value: URL.createObjectURL(file) });
         setProfileFile(file);
       } else {
@@ -63,8 +91,6 @@ export function FormEmploye({
     setProfileFile(null);
   }
 
-  // validando se o usuário esta cadastrando ou editando um novo functionário
-  // para poder validar se foi feita alguma alteração nos valores já existentes
   function handleValidate() {
     if (action === "edit") {
       if (currentDataEmploye === dataEmploye) {
@@ -73,7 +99,6 @@ export function FormEmploye({
         return false;
       }
     } else {
-      // desconstruindo os dados para validação
       const {
         name,
         cpf,
@@ -113,13 +138,21 @@ export function FormEmploye({
     setLoading(true);
     e.preventDefault();
     await handleSubmit({ dataEmploye, file: profileFile });
+    setDataEmploye(resetDataEmploye);
     setLoading(false);
+  }
+
+  async function handleStatus(action: Status) {
+    if (handlechangeStatus) {
+      setLoadingUpdateStatus(true);
+      await handlechangeStatus({ action, dataEmploye });
+      setLoadingUpdateStatus(false);
+    }
   }
 
   return (
     <section className={styles.container}>
       <form onSubmit={(e) => handleSubmitForm(e)}>
-        {/* Inicio do header do formulário */}
         <section className={styles.headerForm}>
           <section className={styles.areaName}>
             <label>
@@ -161,7 +194,6 @@ export function FormEmploye({
             </section>
           </section>
           <section className={styles.areaImgProfile}>
-            {/* Verificando se o usuário colocou uma foto e caso não tenha colocado a segunda verificação é para retornar um avatar masculino ou feminino */}
             {dataEmploye?.profileUrl ? (
               <img src={dataEmploye?.profileUrl} alt="Avatar" />
             ) : (
@@ -177,7 +209,11 @@ export function FormEmploye({
               <label className={styles.inputFile}>
                 {dataEmploye?.profileUrl ? "Alterar" : "Adicionar"} Foto
                 <span>{icons.arrowUp}</span>
-                <input type="file" onChange={(e) => handleChangeImg(e)} />
+                <input
+                  accept=".png, .jpeg, .jpg"
+                  type="file"
+                  onChange={(e) => handleChangeImg(e)}
+                />
               </label>
               {dataEmploye?.profileUrl && (
                 <Button
@@ -192,7 +228,7 @@ export function FormEmploye({
             </section>
           </section>
         </section>
-        {/* Fim do header do formulário */}
+
         <label>
           Endereço:
           <Input
@@ -242,7 +278,7 @@ export function FormEmploye({
                   handleChange({ prop: "birth", value: e as string })
                 }
                 type="date"
-                value={dataEmploye.birth}
+                value={dataEmploye?.birth}
               />
             </label>
             <label>
@@ -252,48 +288,60 @@ export function FormEmploye({
                   handleChange({ prop: "dateAdmission", value: e as string })
                 }
                 type="date"
-                value={dataEmploye.dateAdmission}
+                value={dataEmploye?.dateAdmission}
               />
             </label>
           </section>
         </section>
-        <section className={styles.areaStatusEmploye}>
-          <p>
-            Status:{" "}
-            <span>
-              {dataEmploye.status === "active" && "ATIVO"}
-              {dataEmploye.status === "fired" && "DEMITIDO"}
-              {dataEmploye.status === "end_of_contract" &&
-                "CONTRATO FINALIZADO"}
-            </span>
-          </p>
-          {dataEmploye?.status !== "active" ? (
-            <Button loading={false} disabled={false}>
-              Ativar Funcionário
-            </Button>
-          ) : (
-            <>
+
+        {action === "edit" && (
+          <section className={styles.areaStatusEmploye}>
+            <p>
+              Status:{" "}
+              <span>
+                {dataEmploye?.status === "active" && "ATIVO"}
+                {dataEmploye?.status === "fired" && "DEMITIDO"}
+                {dataEmploye?.status === "end_of_contract" &&
+                  "CONTRATO FINALIZADO"}
+              </span>
+            </p>
+            {dataEmploye?.status !== "active" ? (
               <Button
-                loading={false}
+                loading={loadingUpdateStatus}
                 disabled={false}
-                style={{
-                  background: "#df5050",
-                }}
+                type="button"
+                onClick={() => handleStatus("active")}
               >
-                Demitir Funcionário
+                Ativar Funcionário
               </Button>
-              <Button 
-              loading={false} 
-              disabled={false}
-              style={{
-                background: "#df5050",
-              }}
-              >
-                Finalizar Contrato
-              </Button>
-            </>
-          )}
-        </section>
+            ) : (
+              <>
+                <Button
+                  loading={loadingUpdateStatus}
+                  disabled={false}
+                  type="button"
+                  style={{
+                    background: "#df5050",
+                  }}
+                  onClick={() => handleStatus("fired")}
+                >
+                  Demitir Funcionário
+                </Button>
+                <Button
+                  loading={loadingUpdateStatus}
+                  disabled={false}
+                  style={{
+                    background: "#df5050",
+                  }}
+                  type="button"
+                  onClick={() => handleStatus("end_of_contract")}
+                >
+                  Finalizar Contrato
+                </Button>
+              </>
+            )}
+          </section>
+        )}
 
         <section className={styles.areaFooterForm}>
           <section className={styles.areaSelect}>
@@ -318,6 +366,7 @@ export function FormEmploye({
             <section>
               <p>Setor:</p>
               <select
+                value={dataEmploye?.sector}
                 onChange={(e) =>
                   handleChange({ prop: "sector", value: e.target.value })
                 }

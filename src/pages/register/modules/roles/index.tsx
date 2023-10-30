@@ -37,7 +37,6 @@ export function Roles() {
 
     const nameUpper = role.toLocaleUpperCase();
 
-    // validando se o usuário está tentando cadastrar um cargo já existente
     const roleExist = listRoles.filter((item) => item.name === nameUpper);
 
     if (roleExist.length > 0) {
@@ -53,8 +52,6 @@ export function Roles() {
       setLoading,
     });
 
-    //caso o cadastro dê certo response recebe o objeto que foi criado armazenando name e id
-    //para ser adicionado no state que renderiza os cargos
     if (response) {
       setListRoles([...listRoles, response]);
     }
@@ -65,16 +62,14 @@ export function Roles() {
   async function handleModalEdit(item: RolesOrSectors) {
     setModalEditRoleVisible(true);
     setCurrentIdEdit(item.id);
-    // setando os 2 valores para validar se o usuário fez alguma alteração
+
     setRole(item.name);
     setNewRole(item.name);
   }
 
-  //  Editando cargo
   async function handleEdit() {
     setLoading(true);
 
-    // função retorna boolean para alteração de state local
     const docRef = doc(db, "roles", currentIdEdit);
 
     const newRoleUpper = newRole.toLocaleUpperCase();
@@ -83,9 +78,8 @@ export function Roles() {
     if (response) {
       toast.success("Sucesso ao atualizar cargo");
 
-      //atualizando o state local com o novo nome
       const newListRoles = listRoles;
-      //identificando o index do item atualizado
+
       const indexRoleUpdate = newListRoles.findIndex(
         (item) => item.id === currentIdEdit
       );
@@ -104,7 +98,7 @@ export function Roles() {
     setLoading(false);
     handleCloseEdit();
   }
-  //fechar modais
+
   function handleClose() {
     setRole("");
     setModalNewRoleVisible(false);

@@ -9,6 +9,7 @@ import {
 } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 import { BiLoaderCircle } from "react-icons/bi";
+import { MdLogout } from "react-icons/md";
 
 export const icons = {
   home: <FaHome />,
@@ -20,4 +21,5 @@ export const icons = {
   plus: <FaPlus />,
   arrowUp: <FaArrowUp />,
   circle: <FaCircle />,
+  logout: <MdLogout />,
 };

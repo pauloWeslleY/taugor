@@ -1,4 +1,4 @@
-import { MouseEvent, ReactNode, useRef } from "react";
+import { ReactNode, useRef } from "react";
 import styles from "./modal.module.css";
 import { icons } from "../../../config/icons";
 
@@ -7,7 +7,7 @@ interface ModalProps {
   handleClose: () => void;
   title: string;
 }
-//handleClose é uma função que fecha o modal e limpa os campos
+
 export function Modal({ children, handleClose, title }: ModalProps) {
   const containerRef = useRef<HTMLElement | null>(null);
 
