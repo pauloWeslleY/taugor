@@ -1,4 +1,4 @@
-import styles from "./login.module.css";
+import styles from "./signUp.module.css";
 import { FormEvent, useContext, useEffect, useState } from "react";
 
 import Logo from "../../assets/logo-taugor.png";
@@ -8,13 +8,13 @@ import { AuthContext } from "../../contexts/authContext";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function Login() {
+export default function SignUp() {
   const [loading, setLoading] = useState<boolean>(false);
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const { signIn, isAuthenticated } = useContext(AuthContext);
+  const { signUp, isAuthenticated } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -36,7 +36,7 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
 
-    await signIn({ email, password });
+    await signUp({ email, password });
 
     setEmail("");
     setPassword("");
@@ -51,7 +51,7 @@ export default function Login() {
         <label>
           email:
           <Input
-            placeholder="Digite seu email"
+            placeholder="Digite um email"
             type="email"
             value={email}
             setValue={setEmail}
@@ -60,7 +60,7 @@ export default function Login() {
         <label>
           senha:
           <Input
-            placeholder="Digite sua senha"
+            placeholder="Digite uma senha"
             type="password"
             value={password}
             setValue={setPassword}
@@ -72,10 +72,10 @@ export default function Login() {
           disabled={email === "" || password === "" || password.length < 6}
           type="submit"
         >
-          Fazer Login
+          Cadastrar
         </Button>
         <Link to={"/singup"} className={styles.link}>
-          Criar uma conta!
+          Fazer login!
         </Link>
       </form>
     </section>

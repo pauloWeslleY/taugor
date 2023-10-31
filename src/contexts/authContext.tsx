@@ -1,6 +1,10 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
 
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
 import { auth } from "../services/firebaseConnection";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +13,7 @@ interface AuthContextProps {
   isAuthenticated: boolean;
   loading: boolean;
   signIn: (credential: SignInProps) => Promise<void>;
+  signUp: (credential: SignInProps) => Promise<void>;
   logOutUser: () => Promise<void>;
 }
 
@@ -66,6 +71,28 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  async function signUp({ email, password }: SignInProps) {
+    try {
+      const response = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const userData = {
+        email,
+      };
+      storageUser(userData);
+      setUser(userData);
+      navigate("/home");
+    } catch (error: any) {
+      if (error.code === "auth/email-already-in-use") {
+        toast.error("Este email já está sendo utilizado!");
+        return;
+      }
+      toast.error("Erro ao cadastrar!");
+    }
+  }
+
   async function storageUser(data: UserProps) {
     localStorage.setItem(localStorageKey, JSON.stringify(data));
   }
@@ -87,6 +114,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
         loading,
         signIn,
         logOutUser,
+        signUp,
       }}
     >
       {children}

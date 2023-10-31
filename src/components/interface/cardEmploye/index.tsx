@@ -2,7 +2,7 @@ import { icons } from "../../../config/icons";
 
 import AvatarGirl from "../../../assets/avatar-feminino.png";
 import AvatarBoy from "../../../assets/avatar-masculino.png";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import {
   DataEmploye,
   EmployerContext,
@@ -25,10 +25,20 @@ import { Link } from "react-router-dom";
 
 interface CardEmployeProps {
   employe: DataEmploye;
+  handleDelete?: (employe: DataEmploye) => Promise<void>;
 }
 
-export function CardEmploye({ employe }: CardEmployeProps) {
+export function CardEmploye({ employe, handleDelete }: CardEmployeProps) {
+  const [loading, setLoading] = useState<boolean>(false);
   const { listRoles, listSectors } = useContext(EmployerContext);
+
+  async function handleLoading() {
+    if (handleDelete) {
+      setLoading(true);
+      await handleDelete(employe);
+      setLoading(false);
+    }
+  }
 
   return (
     <ChakraProvider>
@@ -72,7 +82,6 @@ export function CardEmploye({ employe }: CardEmployeProps) {
             py={1}
             borderRadius={"0.3rem"}
             color={"white"}
-            marginBottom={2}
           >
             {employe?.status === "active" ? "ATIVO" : "INATIVO"}
           </Flex>
@@ -82,7 +91,12 @@ export function CardEmploye({ employe }: CardEmployeProps) {
           <Text fontWeight={500} color={"gray.500"} size="sm">
             {employe?.email}
           </Text>
-          <Stack align={"center"} justify={"center"} direction={"row"} mt={6}>
+          <Stack
+            align={"center"}
+            justify={"center"}
+            direction={"row"}
+            mt={employe.status !== "active" ? 3 : 12}
+          >
             <Badge
               px={2}
               py={1}
@@ -94,17 +108,13 @@ export function CardEmploye({ employe }: CardEmployeProps) {
             </Badge>
           </Stack>
 
-          <Stack
-            width={"100%"}
-            direction={"row"}
-            padding={1}
-            justifyContent={"space-between"}
-            alignItems={"center"}
-          >
+          <Stack width={"100%"} direction={"column"} padding={1}>
             <Button
               as={Link}
+              py={2}
               to={`/detail/${employe?.id}`}
               flex={1}
+              h={"35px"}
               bg={"blue.400"}
               color={"white"}
               gap={2}
@@ -120,6 +130,28 @@ export function CardEmploye({ employe }: CardEmployeProps) {
             >
               {icons.plus} Detalhes
             </Button>
+            {employe.status !== "active" && (
+              <Button
+                py={2}
+                flex={1}
+                bg={"red.400"}
+                color={"white"}
+                gap={2}
+                boxShadow={
+                  "0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)"
+                }
+                _hover={{
+                  bg: "red.500",
+                }}
+                _focus={{
+                  bg: "red.500",
+                }}
+                onClick={handleLoading}
+                disabled={loading}
+              >
+                {loading ? icons.loading : "excluír"}
+              </Button>
+            )}
           </Stack>
         </Stack>
       </Stack>

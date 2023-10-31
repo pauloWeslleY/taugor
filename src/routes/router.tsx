@@ -6,11 +6,14 @@ import Home from "../pages/home";
 import PrivateRoutes from "./private";
 import Register from "../pages/register";
 import DetailEmploye from "../pages/detail";
+import SignUp from "../pages/signUp";
 
 export default function RoutesApp() {
   return (
     <Routes>
       <Route path="/" element={<Login />} />
+      <Route path="/singup" element={<SignUp />} />
+
       <Route
         path="/home"
         element={

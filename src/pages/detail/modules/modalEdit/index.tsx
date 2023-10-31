@@ -22,6 +22,10 @@ interface HandleUpdateStatusProps {
   action: Status;
   dataEmploye: DataEmploye;
 }
+interface HandleEditProps {
+  file: File;
+  dataEmploye: DataEmploye;
+}
 
 export function ModalEdit({
   setValue,
@@ -67,7 +71,7 @@ export function ModalEdit({
     }
   }
 
-  async function handleEdit({ dataEmploye, file }: any) {
+  async function handleEdit({ dataEmploye, file }: HandleEditProps) {
     if (dataEmploye === currentDataEmploye) {
       toast.error("Nenhuma alterção foi feita!");
       return;
@@ -82,8 +86,11 @@ export function ModalEdit({
         dataEmploye.profileUrl = url;
       }
 
-      const updateDocRef = doc(db, "employes", dataEmploye.id);
-      const employeUpdate = await updateDoc(updateDocRef, dataEmploye);
+      const updateDocRef = doc(db, "employes", dataEmploye.id!);
+      const employeUpdate = await updateDoc(updateDocRef, { ...dataEmploye });
+      3;
+
+      await addHitory(dataEmploye);
 
       toast.success("Dados atualizado com sucesso!");
     } catch (error) {

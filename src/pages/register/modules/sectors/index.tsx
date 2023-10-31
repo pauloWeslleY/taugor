@@ -59,7 +59,6 @@ export function Sectors() {
     setLoading(false);
   }
 
-  //  Editando Role
   async function handleEdit() {
     setLoading(true);
 

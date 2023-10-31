@@ -68,6 +68,42 @@ export function FormEmploye({
   const { listRoles, listSectors } = useContext(EmployerContext);
 
   function handleChange({ prop, value }: ChangeDataEmploye) {
+    const number = value?.replace(/\D/g, "");
+
+    if (prop === "tel") {
+      const telFormat = number?.replace(
+        /(\d{2})(\d{4,5})(\d{4})/,
+        "($1) $2-$3"
+      );
+
+      if (telFormat?.length! > 15 && value !== " ") {
+        return;
+      }
+
+      setDataEmploye({ ...dataEmploye, tel: telFormat! });
+      return;
+    }
+    if (prop === "cpf") {
+      const cpfFormat = number?.replace(
+        /(\d{3})(\d{3})(\d{3})(\d{2})/,
+        "$1.$2.$3-$4"
+      );
+
+      if (cpfFormat?.length! > 14 && value !== " ") {
+        return;
+      }
+
+      setDataEmploye({ ...dataEmploye, cpf: cpfFormat! });
+      return;
+    }
+    if (prop === "wage") {
+      const formatNumber = value?.replace(/[^0-9.]/g, "");
+      const wage = formatNumber!;
+
+      setDataEmploye({ ...dataEmploye, wage: wage });
+      return;
+    }
+
     setDataEmploye({ ...dataEmploye, [prop]: value });
     if (action === "edit") {
       handleValidate();
@@ -114,15 +150,14 @@ export function FormEmploye({
 
       if (
         name === "" ||
-        cpf === "" ||
+        cpf.length < 14 ||
         email === "" ||
         address === "" ||
-        tel === "" ||
+        tel.length < 15 ||
         dateAdmission === "" ||
         birth === "" ||
         role === "" ||
-        sector === "" ||
-        wage === ""
+        sector === "" 
       ) {
         return true;
       }
@@ -246,6 +281,7 @@ export function FormEmploye({
               setValue={(e) =>
                 handleChange({ prop: "tel", value: e as string })
               }
+              type="tel"
               value={dataEmploye.tel}
               placeholder="(xx) xxxxx-xxxx"
             />
@@ -256,6 +292,7 @@ export function FormEmploye({
               setValue={(e) =>
                 handleChange({ prop: "email", value: e as string })
               }
+              type="email"
               value={dataEmploye.email}
               placeholder="exemplo@gmail.com"
             />
@@ -389,6 +426,7 @@ export function FormEmploye({
                 setValue={(e) =>
                   handleChange({ prop: "wage", value: e as string })
                 }
+                type="numbe"
                 value={dataEmploye?.wage}
                 placeholder="R$: 00,00"
               />
