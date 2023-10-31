@@ -52,7 +52,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 
   async function signIn({ email, password }: SignInProps) {
     try {
-      const response = await signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(auth, email, password);
       const userData = {
         email,
       };
@@ -73,7 +73,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 
   async function signUp({ email, password }: SignInProps) {
     try {
-      const response = await createUserWithEmailAndPassword(
+      await createUserWithEmailAndPassword(
         auth,
         email,
         password

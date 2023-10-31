@@ -157,7 +157,8 @@ export function FormEmploye({
         dateAdmission === "" ||
         birth === "" ||
         role === "" ||
-        sector === "" 
+        sector === "" ||
+        wage === ""
       ) {
         return true;
       }

@@ -8,7 +8,7 @@ export async function editRoleOrSector({
   name: string;
 }) {
   try {
-    const response = await updateDoc(docRef, {
+    await updateDoc(docRef, {
       name,
     });
     return true;

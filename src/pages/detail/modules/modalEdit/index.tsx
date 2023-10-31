@@ -1,4 +1,4 @@
-import { SetStateAction, Dispatch, useContext, useState } from "react";
+import { SetStateAction, Dispatch, useContext } from "react";
 import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { toast } from "react-toastify";
@@ -87,7 +87,7 @@ export function ModalEdit({
       }
 
       const updateDocRef = doc(db, "employes", dataEmploye.id!);
-      const employeUpdate = await updateDoc(updateDocRef, { ...dataEmploye });
+      await updateDoc(updateDocRef, { ...dataEmploye });
       3;
 
       await addHitory(dataEmploye);
@@ -119,7 +119,7 @@ export function ModalEdit({
 
     try {
       if (id) {
-        const response = await updateDoc(docRef, { status: action, ...rest });
+        await updateDoc(docRef, { status: action, ...rest });
         await addHitory({ status: action, ...rest, id });
       }
 

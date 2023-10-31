@@ -57,13 +57,13 @@ export default function Home() {
         history: deleteField(),
       });
 
-      const response = await deleteDoc(docRef);
+      await deleteDoc(docRef);
 
       const newListEmployes = listEmployes.filter(
         (dataEmploye) => dataEmploye.id !== employe.id
       );
 
-        setListEmployes(newListEmployes)
+      setListEmployes(newListEmployes)
 
       toast.success("Funcionário excluído com sucesso!");
     } catch (error) {

@@ -46,7 +46,7 @@ export function NewEmployer() {
         const url = await getDownloadURL(imgUrl.ref);
 
         const updateDocRef = doc(db, "employes", response.id);
-        const employeUpdate = await updateDoc(updateDocRef, {
+        await updateDoc(updateDocRef, {
           profileUrl: url,
         });
       }

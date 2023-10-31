@@ -30,7 +30,7 @@ interface CardEmployeProps {
 
 export function CardEmploye({ employe, handleDelete }: CardEmployeProps) {
   const [loading, setLoading] = useState<boolean>(false);
-  const { listRoles, listSectors } = useContext(EmployerContext);
+  const { listRoles } = useContext(EmployerContext);
 
   async function handleLoading() {
     if (handleDelete) {
