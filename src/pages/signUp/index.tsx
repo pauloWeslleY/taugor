@@ -74,7 +74,7 @@ export default function SignUp() {
         >
           Cadastrar
         </Button>
-        <Link to={"/singup"} className={styles.link}>
+        <Link to={"/"} className={styles.link}>
           Fazer login!
         </Link>
       </form>
